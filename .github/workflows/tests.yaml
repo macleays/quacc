@@ -139,7 +139,7 @@ jobs:
           uv pip install --system -r tests/requirements.txt -r tests/requirements-${{ matrix.wflow_engine }}.txt -r tests/requirements-phonopy.txt "quacc[dev] @ ."
 
       - name: Run tests with pytest
-        run: pytest --durations=10 tests/${{ matrix.wflow_engine }} --cov=quacc --cov-report=xml
+        run: quacc set WORKFLOW_ENGINE ${{ matrix.wflow_engine }}; pytest --durations=10 tests/${{ matrix.wflow_engine }} --cov=quacc --cov-report=xml
 
       - name: Combine Coverage Reports
         if: matrix.wflow_engine == 'dask'
