@@ -84,7 +84,9 @@ jobs:
         run: covalent start
 
       - name: Run tests with pytest
-        run: pytest --durations=10 tests/covalent --cov=quacc --cov-report=xml --profile
+        run: |
+          quacc set WORKFLOW_ENGINE covalent
+          pytest --durations=10 tests/covalent --cov=quacc --cov-report=xml --profile
 
       - name: Upload code coverage report to Artifact
         uses: actions/upload-artifact@v4
@@ -139,7 +141,9 @@ jobs:
           uv pip install --system -r tests/requirements.txt -r tests/requirements-${{ matrix.wflow_engine }}.txt -r tests/requirements-phonopy.txt "quacc[dev] @ ."
 
       - name: Run tests with pytest
-        run: quacc set WORKFLOW_ENGINE ${{ matrix.wflow_engine }}; pytest --durations=10 tests/${{ matrix.wflow_engine }} --cov=quacc --cov-report=xml
+        run: |
+          quacc set WORKFLOW_ENGINE ${{ matrix.wflow_engine }}
+          pytest --durations=10 tests/${{ matrix.wflow_engine }} --cov=quacc --cov-report=xml
 
       - name: Combine Coverage Reports
         if: matrix.wflow_engine == 'dask'
@@ -182,7 +186,9 @@ jobs:
           uv pip install --system -r tests/requirements.txt -r tests/requirements-${{ matrix.wflow_engine }}.txt -r tests/requirements-phonopy.txt "quacc[dev] @ ."
 
       - name: Run tests with pytest
-        run: pytest --durations=10 tests/${{ matrix.wflow_engine }} --cov=quacc --cov-report=xml
+        run: |
+          quacc set WORKFLOW_ENGINE ${{ matrix.wflow_engine }}
+          pytest --durations=10 tests/${{ matrix.wflow_engine }} --cov=quacc --cov-report=xml
 
       - name: Upload code coverage report to Artifact
         uses: actions/upload-artifact@v4
@@ -228,7 +234,9 @@ jobs:
           uv pip install --system -r tests/requirements.txt "quacc[dev] @ ."
 
       - name: Run tests with pytest
-        run: pytest -k 'psi4' --durations=10 --cov=quacc --cov-report=xml
+        run: |
+          quacc set WORKFLOW_ENGINE psi4
+          pytest -k 'psi4' --durations=10 --cov=quacc --cov-report=xml
 
       - name: Upload code coverage report to Artifact
         uses: actions/upload-artifact@v4
